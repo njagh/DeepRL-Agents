@@ -3,6 +3,9 @@ import random
 import itertools
 import scipy.misc
 import matplotlib.pyplot as plt
+#from skimage.transform import resize
+#from skimage import data
+from PIL import Image
 
 
 class gameOb():
@@ -109,9 +112,17 @@ class gameEnv():
                 hero = item
         if self.partial == True:
             a = a[hero.y:hero.y+3,hero.x:hero.x+3,:]
-        b = scipy.misc.imresize(a[:,:,0],[84,84,1],interp='nearest')
-        c = scipy.misc.imresize(a[:,:,1],[84,84,1],interp='nearest')
-        d = scipy.misc.imresize(a[:,:,2],[84,84,1],interp='nearest')
+### ORIGINAL - KEEP
+#        b = scipy.misc.imresize(a[:,:,0],[84,84,1],interp='nearest')
+#        c = scipy.misc.imresize(a[:,:,1],[84,84,1],interp='nearest')
+#        d = scipy.misc.imresize(a[:,:,2],[84,84,1],interp='nearest')
+### END ORIGINAL
+
+        b = np.array(Image.fromarray(a[:,:,0]).resize((84,84),resample = Image.NEAREST))
+        c = np.array(Image.fromarray(a[:,:,1]).resize((84,84),resample = Image.NEAREST))
+        d = np.array(Image.fromarray(a[:,:,2]).resize((84,84),resample = Image.NEAREST))
+#        c = scipy.misc.imresize(a[:,:,1],[84,84,1],interp='nearest')
+#        d = scipy.misc.imresize(a[:,:,2],[84,84,1],interp='nearest')
         a = np.stack([b,c,d],axis=2)
         return a
 
